@@ -18,8 +18,8 @@ if __name__ == "__main__":
     generate_maps_for_scope(paths, param)
 
     # Wind speed correction
-    # if "WindOn" in param["technology"] or "WindOff" in param["technology"]:
-    #     generate_wind_correction(paths, param)
+    if "WindOn" in param["technology"] or "WindOff" in param["technology"]:
+         generate_wind_correction(paths, param)
 
     for tech in param["technology"]:
         print("Tech: " + tech)

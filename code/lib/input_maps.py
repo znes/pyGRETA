@@ -305,10 +305,16 @@ def generate_landuse(paths, param):
     Crd_all = param["Crd_all"]
     Ind = ind_global(Crd_all, res_desired)[0]
     GeoRef = param["GeoRef"]
+    ds = rasterio.open(paths["LU_global"])
+    window = rasterio.windows.from_bounds(Crd_all[3], Crd_all[2], Crd_all[1], Crd_all[0], ds.transform, 1200, 1200,)
+
     with rasterio.open(paths["LU_global"]) as src:
-        w = src.read(1, window=windows.Window.from_slices(slice(Ind[0] - 1, Ind[2]), slice(Ind[3] - 1, Ind[1])))
-    w = np.flipud(w)
-    array2raster(paths["LU"], GeoRef["RasterOrigin"], GeoRef["pixelWidth"], GeoRef["pixelHeight"], w)
+        w = src.read(1, window=window)  # s.Window.from_slices(slice(Ind[0] - 1, Ind[2]), slice(Ind[3] - 1, Ind[1])))
+
+    # w = np.flipud(w)
+    array2raster(
+        paths["LU"], GeoRef["RasterOrigin"], GeoRef["pixelWidth"], GeoRef["pixelHeight"], w,
+    )
     print("files saved: " + paths["LU"])
     create_json(paths["LU"], param, ["region_name", "Crd_all", "res_desired", "GeoRef"], paths, ["LU_global", "LU"])
     timecheck("End")

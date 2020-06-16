@@ -57,18 +57,15 @@ def general_settings():
     global root
 
     param = {}
-    param["author"] = "Kais Siala"  # the name of the person running the script
-    param["comment"] = "Workshop_example"
+    param["author"] = "Simon Hilpert"  # the name of the person running the script
+    param["comment"] = "Jordan Model"
 
     paths = {}
     fs = os.path.sep
-    current_folder = os.path.dirname(os.path.abspath(__file__))
-    root = str(Path(current_folder).parent.parent.parent)
-    # For use at TUM ENS
-    if root[-1] != fs:
-        root = root + fs + "Database_KS" + fs
-    else:
-        root = root + "Database_KS" + fs
+    #current_folder = os.path.dirname(os.path.abspath(__file__))
+    root = os.path.expanduser("~")
+
+
 
     return paths, param
 
@@ -108,20 +105,20 @@ def scope_paths_and_parameters(paths, param):
     :rtype: tuple(dict, dict)
     """
     # Paths to the shapefiles
-    PathTemp = root + "02 Shapefiles for regions" + fs + "User-defined" + fs
+    PathTemp = root + fs + "01 Raw inputs" + fs + "gadm36_JOR_shp" + fs
 
-    paths["spatial_scope"] = PathTemp + "gadm36_GHA_0.shp"
-    paths["subregions"] = PathTemp + "gadm36_GHA_0.shp"
+    paths["spatial_scope"] = PathTemp + "gadm36_JOR_0.shp"
+    paths["subregions"] = PathTemp + "gadm36_JOR_0.shp"
 
     # Name tags for the scope and the subregions
-    param["region_name"] = "Ghana"  # Name tag of the spatial scope
-    param["subregions_name"] = "Ghana_country"  # Name tag of the subregions
+    param["region_name"] = "Jordan"  # Name tag of the spatial scope
+    param["subregions_name"] = "Jordan_country"  # Name tag of the subregions
 
     # Year
-    param["year"] = 2015
+    param["year"] = 2011
 
     # Technologies
-    param["technology"] = ["WindOn", "PV"]  # ["PV", "CSP", "WindOn", "WindOff"]
+    param["technology"] = ["WindOn", "PV", "CSP"]  # ["PV", "CSP", "WindOn", "WindOff"]
 
     return paths, param
 
@@ -179,7 +176,7 @@ def weather_data_parameters(param):
     :return param: The updated dictionary param.
     :rtype: dict
     """
-    param["MERRA_coverage"] = "World"
+    param["MERRA_coverage"] = "Jordan"
     param["MERRA_correction"] = True
     param["MERRA_correction_factor"] = {"W50M": 0.35, "CLEARNESS": 0.35, "T2M": 0.35}  # Wind Speed  # Clearness index  # Temperature at 2 m
     return param
@@ -293,7 +290,7 @@ def landuse_parameters(param):
 
     Land use reclassification::
 
-        # 0   -- Water
+        # 17  -- Water
         # 1   -- Evergreen needle leaf forest
         # 2   -- Evergreen broad leaf forest
         # 3   -- Deciduous needle leaf forest
@@ -312,7 +309,7 @@ def landuse_parameters(param):
         # 16  -- Barren or sparsely vegetated
     """
     landuse = {
-        "type": np.array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]),
+        "type": np.array([17, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]),
         "type_urban": 13,
         "Ross_coeff": np.array(
             [0.0208, 0.0208, 0.0208, 0.0208, 0.0208, 0.0208, 0.0208, 0.0208, 0.0208, 0.0208, 0.0208, 0.0208, 0.0208, 0.0208, 0.0208, 0.0208, 0.0208]
@@ -650,15 +647,15 @@ def global_maps_input_paths(paths):
     global fs
 
     # Global maps
-    PathTemp = root + "01 Raw inputs" + fs + "Maps" + fs
-    paths["LU_global"] = PathTemp + "Landuse" + fs + "LCType.tif"
-    paths["Topo_tiles"] = PathTemp + "Topography" + fs
-    paths["Pop_global"] = PathTemp + "Population" + fs + "gpw_v4_population_count_rev10_2015_30_sec.tif"
-    paths["Bathym_global"] = PathTemp + "Bathymetry" + fs + "ETOPO1_Ice_c_geotiff.tif"
-    paths["Protected"] = PathTemp + "Protected Areas" + fs + "WDPA_Nov2018-shapefile-polygons.shp"
+    PathTemp = root + fs + "01 Raw inputs" + fs + "Maps" + fs
+    paths["LU_global"] = PathTemp + "Landuse" + fs + "MCD12Q1.006_LC_Type1_doy2018001_aid0001.tif"
+    paths["Topo_tiles"] = PathTemp + "Topography" + fs  #
+    paths["Pop_global"] = PathTemp + "Population" + fs + "gpw_v4_population_density_rev11_2015_30_sec.tif" #
+    paths["Bathym_global"] = PathTemp + "Bathymetry" + fs + "ETOPO1_Ice_c_geotiff.tif" #
+    paths["Protected"] = PathTemp + "Protected Areas" + fs + "WDPA_Jun2020_JOR-shapefile-polygons.shp" #
     paths["GWA"] = PathTemp + "Global Wind Atlas" + fs + fs + "windSpeed.csv"
-    paths["Countries"] = PathTemp + "Countries" + fs + "gadm36_0.shp"
-    paths["EEZ_global"] = PathTemp + "EEZ" + fs + "eez_v10.shp"
+    paths["Countries"] = PathTemp + "Countries" + fs + "gadm36_JOR_0.shp" #
+    paths["EEZ_global"] = PathTemp + "EEZ" + fs + "eez_v10.shp" # skip
 
     return paths
 
@@ -692,7 +689,7 @@ def output_folders(paths, param):
     subregions = param["subregions_name"]
 
     # Main output folder
-    paths["region"] = root + "03 Intermediate files" + fs + "Files " + region + fs
+    paths["region"] = root + fs + "03 Intermediate files" + fs + "Files " + region + fs
 
     # Output folder for weather data
     paths["weather_data"] = paths["region"] + "Weather data" + fs

@@ -76,7 +76,7 @@ def initialization():
     # Crop all polygons and take the part inside the bounding box
     regions_shp["geometry"] = regions_shp["geometry"].intersection(bounds_box)
     regions_shp = regions_shp[regions_shp.geometry.area > 0]
-    regions_shp.sort_values(by=["NAME_SHORT"], inplace=True)
+    regions_shp.sort_values(by=["NAME_0"], inplace=True)
     regions_shp.reset_index(inplace=True)
     param["regions_sub"] = regions_shp
     param["nRegions_sub"] = len(param["regions_sub"])
