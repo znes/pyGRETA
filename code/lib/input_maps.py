@@ -5,12 +5,12 @@ from lib.spatial_functions import *
 def generate_maps_for_scope(paths, param):
     """
     This function calls the individual functions that generate the maps for the geographic scope.
-    
+
     :param paths: Dictionary including the paths.
     :type paths: dict
     :param param: Dictionary including the user preferences.
     :type param: dict
-    
+
     :return: The maps are saved directly in the desired paths.
     :rtype: None
     """
@@ -492,9 +492,10 @@ def generate_population(paths, param):
     Ind = ind_global(Crd_all, res_desired)[0]
     GeoRef = param["GeoRef"]
     with rasterio.open(paths["Pop_global"]) as src:
-        A_POP_part = src.read(1)  # map is only between latitudes -60 and 85
+        A_POP_part = src.read(1)  # depending on revision map is only between latitudes -60 and 85
     A_POP = np.zeros((21600, 43200))
-    A_POP[600:18000, :] = A_POP_part
+    if "gpw_v4_population_count_rev10_2015_30_sec.tif" in paths["Pop_global"]:
+        A_POP[600:18000, :] = A_POP_part
     A_POP = resizem(A_POP, 180 * 240, 360 * 240) / 4  # density is divided by 4
     A_POP = np.flipud(A_POP[Ind[0] - 1 : Ind[2], Ind[3] - 1 : Ind[1]])
     array2raster(paths["POP"], GeoRef["RasterOrigin"], GeoRef["pixelWidth"], GeoRef["pixelHeight"], A_POP)
@@ -505,7 +506,7 @@ def generate_population(paths, param):
 
 def generate_protected_areas(paths, param):
     """
-    This function reads the shapefile of the globally protected areas, adds an attribute whose values are based on the dictionary 
+    This function reads the shapefile of the globally protected areas, adds an attribute whose values are based on the dictionary
     of conversion (protected_areas) to identify the protection category, then converts the shapefile into a raster for the scope.
     The values are integers from 0 to 10.
 
