@@ -63,7 +63,7 @@ def general_settings():
     paths = {}
     fs = os.path.sep
     #current_folder = os.path.dirname(os.path.abspath(__file__))
-    root = os.path.expanduser("~")
+    root = os.path.expanduser("~/")
 
 
 
@@ -105,7 +105,7 @@ def scope_paths_and_parameters(paths, param):
     :rtype: tuple(dict, dict)
     """
     # Paths to the shapefiles
-    PathTemp = root + fs + "01 Raw inputs" + fs + "gadm36_JOR_shp" + fs
+    PathTemp = root + "01 Raw inputs" + fs + "gadm36_JOR_shp" + fs
 
     paths["spatial_scope"] = PathTemp + "gadm36_JOR_0.shp"
     paths["subregions"] = PathTemp + "gadm36_JOR_0.shp"
@@ -619,7 +619,7 @@ def weather_input_folder(paths, param):
 
     MERRA_coverage = param["MERRA_coverage"]
     year = str(param["year"])
-    paths["MERRA_IN"] = root + "01 Raw inputs" + fs + "Renewable energy" + fs + MERRA_coverage + " " + year + fs
+    paths["MERRA_IN"] = root + "01 Raw inputs" + fs + "Renewable energy" + fs + MERRA_coverage + fs + year + fs
 
     return paths
 
@@ -647,7 +647,7 @@ def global_maps_input_paths(paths):
     global fs
 
     # Global maps
-    PathTemp = root + fs + "01 Raw inputs" + fs + "Maps" + fs
+    PathTemp = root + "01 Raw inputs" + fs + "Maps" + fs
     paths["LU_global"] = PathTemp + "Landuse" + fs + "MCD12Q1.006_LC_Type1_doy2018001_aid0001.tif"
     paths["Topo_tiles"] = PathTemp + "Topography" + fs  #
     paths["Pop_global"] = PathTemp + "Population" + fs + "gpw_v4_population_density_rev11_2015_30_sec.tif" #
@@ -689,7 +689,7 @@ def output_folders(paths, param):
     subregions = param["subregions_name"]
 
     # Main output folder
-    paths["region"] = root + fs + "03 Intermediate files" + fs + "Files " + region + fs
+    paths["region"] = root + "03 Intermediate files" + fs + "Files " + region + fs
 
     # Output folder for weather data
     paths["weather_data"] = paths["region"] + "Weather data" + fs
