@@ -115,10 +115,10 @@ def scope_paths_and_parameters(paths, param):
     param["subregions_name"] = "Jordan_country"  # Name tag of the subregions
 
     # Year
-    param["year"] = 2011
+    param["year"] = 2018
 
     # Technologies
-    param["technology"] = ["WindOn", "PV", "CSP"]  # ["PV", "CSP", "WindOn", "WindOff"]
+    param["technology"] = ["WindOn", "PV"] #,["PV", "CSP", "WindOn", "WindOff"]
 
     return paths, param
 
