@@ -290,7 +290,8 @@ def clean_IRENA_summary(paths, param):
             IRENA.loc[i, "Technology"] = IRENA.loc[i - 1, "Technology"]
 
     for c in IRENA["Country/area"].unique():
-        IRENA.loc[IRENA["Country/area"] == c, "Country/area"] = IRENA_dict[c]
+        if IRENA_dict.get(c):
+            IRENA.loc[IRENA["Country/area"] == c, "Country/area"] = IRENA_dict[c]
 
     IRENA = IRENA.set_index(["Country/area", "Technology"])
 
