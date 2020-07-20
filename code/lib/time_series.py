@@ -53,7 +53,7 @@ def find_representative_locations(paths, param, tech):
 
         q_rank = 0
         for q in quantiles:
-            list_names.append(regions_shp["NAME_SHORT"].loc[reg])
+            list_names.append(regions_shp["NAME_0"].loc[reg])
             list_quantiles.append("q" + str(q))
             if q == 100:
                 I = I_old[(len(X) - 1) - sum(np.isnan(X).astype(int))]
@@ -77,11 +77,11 @@ def find_representative_locations(paths, param, tech):
     points = [(param[tech]["Crd_points"][1][i], param[tech]["Crd_points"][0][i]) for i in range(0, len(param[tech]["Crd_points"][0]))]
 
     # Create shapefile
-    schema = {"geometry": "Point", "properties": {"NAME_SHORT": "str", "quantile": "str"}}
+    schema = {"geometry": "Point", "properties": {"NAME_0": "str", "quantile": "str"}}
     with fiona.open(paths[tech]["Locations"], "w", "ESRI Shapefile", schema) as c:
         c.writerecords(
             [
-                {"geometry": mapping(Point(points[i])), "properties": {"NAME_SHORT": list_names[i], "quantile": list_quantiles[i]}}
+                {"geometry": mapping(Point(points[i])), "properties": {"NAME_0": list_names[i], "quantile": list_quantiles[i]}}
                 for i in range(0, len(points))
             ]
         )
@@ -171,7 +171,7 @@ def generate_time_series_for_representative_locations(paths, param, tech):
 
     # Restructuring results
     tuples = list(zip(list_names, list_quantiles))
-    column_names = pd.MultiIndex.from_tuples(tuples, names=["NAME_SHORT", "Quantile"])
+    column_names = pd.MultiIndex.from_tuples(tuples, names=["NAME_0", "Quantile"])
     results = pd.DataFrame(TS.transpose(), columns=column_names)
     results.to_csv(paths[tech]["TS"], sep=";", decimal=",")
     create_json(

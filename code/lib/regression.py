@@ -77,11 +77,11 @@ def clean_FLH_regression(paths, param):
     # Load IRENA dictionary
     IRENA_dict = pd.read_csv(paths["IRENA_dict"], sep=";")
     IRENA_dict.dropna(inplace=True)
-    IRENA_dict.set_index(["NAME_SHORT"], inplace=True)
+    IRENA_dict.set_index(["NAME_0"], inplace=True)
     IRENA_dict = IRENA_dict["Countries shapefile"].to_dict()
 
     # Setup FLH_regression dataframe
-    list_regions = param["regions_sub"]["NAME_SHORT"].values.tolist()
+    list_regions = param["regions_sub"]["NAME_0"].values.tolist()
     FLH_regression = pd.DataFrame(columns=["WindOn", "WindOff", "PV", "CSP"], index=list_regions, dtype=float)
 
     # Fill in FLH_regression dataframe
@@ -141,7 +141,7 @@ def clean_TS_regression(paths, param, tech):
     irena = pd.read_csv(paths["FLH_regression"], sep=";", decimal=",", index_col=0)
 
     # Find intersection between desired regions and irena regions
-    list_regions = param["regions_sub"]["NAME_SHORT"].values.tolist()
+    list_regions = param["regions_sub"]["NAME_0"].values.tolist()
     list_regions = sorted(list(set(list_regions).intersection(set(irena.index))))
 
     # Create TS_regression dataframe
@@ -273,7 +273,7 @@ def get_regression_coefficients(paths, param, tech):
     param["TS_regression"] = TS_reg
 
     # Find intersection between FLH and shapefile subregions
-    list_regions = param["regions_sub"]["NAME_SHORT"].values.tolist()
+    list_regions = param["regions_sub"]["NAME_0"].values.tolist()
     list_regions = sorted(list(set(list_regions).intersection(set(FLH.index))))
 
     # loop over all combinations and regions
